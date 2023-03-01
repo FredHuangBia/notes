@@ -67,3 +67,24 @@ We calculating confidence interval, we need to be careful that the $\hat{\theta}
 ## Bootstrap and regression
 Bootstrap can also be used to estimate the confidence interval obtaiend by regression, such as least square. But instead of resample from the pairs directly, we resample from the residuals after the fit. And plut-in the estimated values (the fit) as the oracle, using the residuals, and assume the $X_i$ is fixed, we recalculate a $Y_i^*$. Now these new $X_i, Y_i^*$ pairs are new samples we draw, and we could use them to re-estimate the parameters (the fit).
 
+# $\chi^2$-Tests
+$\chi^2$-tests assumes samples are drawn independently.
+![](imgs/chi-square%20distribution.png)
+## Test of goodness of fit
+We use M&M as an example, suppose we have a expected probability distribution of different color categories, and an observed color distribution. We assume $H_0$ that the observed fits the expectation. Now we calculate $\chi^2$ to find the p-value.
+$$\chi^2=\sum_{categories}\frac{(observed-expected)^2}{expected}$$
+
+The $\chi^2$ has its own distribution, the one we should pick is the one with (num_categories-1) degrees of freedom. The area to the right of the $\chi^2$ is the p-value. Larger $\chi^2$ or smaller p-value holds more evidence against $H_0$.
+
+Notice that the $\chi^2$ test is a generalization of the z-test to multiple categories.
+
+## Test of Homogeneity and Independence
+Homogeneity tests assumes different categories are the same on some probability. It is for evaluating whether a categorical variable measured on **several samples** has the same distribution in each of the samples. In this case, if we don't know the probability, we could pool the samples and calculate the probability. Now we could run the above $\chi^2$ test. Note that the degrees of freedom is now different.
+$$DoF=(num\;rows-1)\times (num\;cols-1)$$
+
+Test of independence is similar to the case of homogeneity. There are two categorical variables, and there's only one sample.
+
+|Test type     | Samples | Categorical Variables (diff from num categories) |
+| ---          | ------- | ---                                              |
+| homogeneity  | Many    | Single |
+| independence | Single  | Two    |
