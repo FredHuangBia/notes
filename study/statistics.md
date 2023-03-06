@@ -27,11 +27,11 @@ A $z$-statistic (one type of test statistic), measures how far away the observed
 $$z=\frac{observed-expected}{SE}$$
 The $expected$ and $SE$ are all under the assumption that $H_0$ is true. The larger the $z$ value is, the stronger the evidence.
 
-## $p$-value --- observed significance level
+## $p$-value -- observed significance level
 $p$ value is the probability of observing a more extreme $z$ under the assumption that $H_0$ is true. But it does not directly measure the probability of $H_0$. If $H_0$ is true, then $z$ follow standard normal distribution according to central limit theorem. Then the $p$ value is the probability of getting a $|z'|>|z|$, or $z'>z$, depending on whether we are doing one sided or two sided test. So if $p<0.05$ (we call this 5% significance level), then we say the observations is statistically significant and will reject the null hypothesis.
 
-## Student's t-distribution
-When the $\sigma$ is unknown, we estimate it from the sample standard deviation. However, when the sample size is small (usually <=20>), the estimation of $\sigma$ has a larger uncertainty. The normal curve in this case will not be a good enough approximation to the distribution of the z-statistic. Then it comes the student's t-distribution with $n-1$ degress of freedom. Now we estimate the population standard deviation by
+## Two sample t-test
+When the $\sigma$ is unknown, we estimate it from the sample standard deviation. However, when the sample size is small (usually <=20), the estimation of $\sigma$ has a larger uncertainty. The normal curve in this case will not be a good enough approximation to the distribution of the z-statistic. Then it comes the student's t-distribution with $n-1$ degress of freedom. Now we estimate the population standard deviation by
 $$s=\sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2}$$
 In this case (when sample size is small), we usually replace the $z$ test with $t$ test.
 $$\bar{x}\pm t_{n-1}SE$$
@@ -68,7 +68,7 @@ We calculating confidence interval, we need to be careful that the $\hat{\theta}
 Bootstrap can also be used to estimate the confidence interval obtaiend by regression, such as least square. But instead of resample from the pairs directly, we resample from the residuals after the fit. And plut-in the estimated values (the fit) as the oracle, using the residuals, and assume the $X_i$ is fixed, we recalculate a $Y_i^*$. Now these new $X_i, Y_i^*$ pairs are new samples we draw, and we could use them to re-estimate the parameters (the fit).
 
 # $\chi^2$-Tests
-$\chi^2$-tests assumes samples are drawn independently.
+A $\chi^2$-test is a statistical hypothesis test used in the analysis of contingency tables when the sample sizes are large. It is primarily used to examine whether two categorical variables are independent in influencing the test statistic. $\chi^2$-tests assumes samples are drawn independently and the test statistic is $\chi^2$ distributed under $H_0$.
 ![](imgs/chi-square%20distribution.png)
 ## Test of goodness of fit
 We use M&M as an example, suppose we have a expected probability distribution of different color categories, and an observed color distribution. We assume $H_0$ that the observed fits the expectation. Now we calculate $\chi^2$ to find the p-value.
@@ -88,3 +88,32 @@ Test of independence is similar to the case of homogeneity. There are two catego
 | ---          | ------- | ---                                              |
 | homogeneity  | Many    | Single |
 | independence | Single  | Two    |
+
+
+# ANOVA - Analysis of Variance
+Recall that t-test can only compare if two groups have the same mean. What if we have multiple groups to compare? ANOVA generalizes t-test to multiple groups to comparing ceveral means. The key idea is to comparing the sample variance of group means to the sample variance within the groups.
+
+## F-test
+Suppose we have $k$ groups, and the $j$ group has $n_j$ observations. We want to know if their groups means are the same. As usual, we assume they are the same as $H_0$.
+
+| group 1 | ... | group $k$ |
+| ---     | --- | ---|
+| $y_{11}$   | ... | $y_{k1}$ |
+| ...     | ... | ... |
+| $y_{1n_1}$   | ... | $y_{kn_k}$ |
+
+The sample mean of group $j$ and the overall sample mean are as follow.
+$$ \bar{y}_j = \frac{1}{n_j}\sum_i y_{ji} $$
+$$ \bar{\bar{y}} = \frac{1}{N}\sum_{i,j} y_{ji} $$
+
+The treatment sum of squares, with $k-1$ DoF, and its mean are as follow. It measure the variability of the treat means $\bar{y}_i$.
+$$SST = \sum_j({\bar{y}_j}-\bar{\bar{y}})^2$$
+$$MST = \frac{SST}{k-1}$$
+
+The error sum of squares, with $N-k$ DoF, and its mean are as follow. It measures the variability within the groups.
+$$SSE = \sum_j \sum_i (y_{ji}-\bar{y}_j)^2$$
+$$MSE = \frac{SSE}{N-k}$$
+
+Now, the **$F$-statistic** is the ration
+$$F=\frac{MST}{MSE}$$
+It follows $F$-distribution, with $k-1$ and $N-k$ degrees of freedom. We could look at the $p$-value to see if our null-hypothesis is correct. Larger $F$ means smaller $p$ and more evidence to reject $H_0$.

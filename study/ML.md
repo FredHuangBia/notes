@@ -149,3 +149,10 @@ $F_\beta$ score is a way to weight the importance of precision and recall differ
 **Interpretability**: 
 
 **Speed or training time:** 
+
+## Mahalanobis distance
+The Mahalanobis distance is a measure of distance between a point $P$ and a distribution $D$. It is a multi-dimensional generalization of the idea of measuring how many standard deviations away $P$ is from the mean of $D$. If the distribution is rescaled to have unit variance, then Mahalanobis distance is the same as Euclidean distance.
+
+Given a probability distribution $Q$ with mean $y$, and covariance matrix $S$, the Mahalanobis distance of a point $x$ from $Q$ is:
+
+$$d_M(x,y,Q)=\sqrt{(x-y)^T S^{-1} (x-y)^T}$$
