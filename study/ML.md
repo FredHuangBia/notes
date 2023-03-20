@@ -76,7 +76,7 @@ What if the variables are continuous? We could divide them into several discrete
 <br>
 
 ## Decicsion Tree
-Given a lot of decision critrerion, we choose the one that maximize information Gain. We do this until all the data are correctly classified, or some other stopping criterion is met.
+Given a lot of decision critrerion, we choose the one that maximize information Gain (actually mutual information). We do this until all the data are correctly classified, or some other stopping criterion is met.
 
 $$Entropy = H = \sum_i -p_i \log(p_i)$$
 When we split data by a node, the original data distribution changes from one set to two smaller sets, each have their own entropy. We could weight the two child sets according to the number of data points in them.
@@ -134,14 +134,41 @@ $$TPR = \frac{TP}{TP+FN}$$
 $$FPR = \frac{FP}{TN+FP}$$
 AUC is the area under this curve. The larger, the better. Best is TPR=1 and FPR=0.
 
-## Collaborative filtering
-It is a commenly used method in recommendation system.
-
-Collaborative filtering is a method of making automatic predictions (filtering) about the interests of a user by collecting preferences or taste information from many users (collaborating). The underlying assumption of the collaborative filtering approach is that if a person A has the same opinion as a person B on an issue, A is more likely to have B's opinion on a different issue than that of a randomly chosen person.
+<br>
 
 ## $F_1$ score & $F_\beta$ scure
 $$F_1=\frac{2 * precision * recall}{precision + recall}$$
 $F_\beta$ score is a way to weight the importance of precision and recall differently. Why we don't use arithmatic average? Because that assumes precision and recall could replace each other, when one drop, the increase of the other could mitigate that. This is obviously wrong.
+
+## KL-Divergence
+KL-Divergence, also called relative entropy, denoted $D_{KL}(P||Q)$, is a measure of how probability distribution $P$ is different from a reference $Q$. 
+
+$$D_{KL}(P||Q)=\sum_{x}P(x)\log\frac{P(x)}{Q(x)}$$
+
+A simple interpretation of KL divergence of P from Q is the expected excess surprise of using Q as model when the actual distribution is P.
+
+Another interpretation is the difference of average number of bits to model $P$ between using code optimized for $Q$ and $P$.
+
+It has these properties: 
+- non-negative
+- not symmetric 
+- not satisfy the triangle inequality
+
+## Mutual Information
+Mutual information of two random variables is a measure of mutual dependence, it quantifies the amount of information obtained about one random variable by observing the other random variable.
+$$I(X;Y)=D_{KL}(P(X,Y)||P_X\times P_Y) = \sum_{x,y}P_{X,Y}(x,y)\log \frac{P_{X,Y}(x,y)}{P_X(x)P_Y(y)}$$
+
+Interestingly, mutual information is symmetric! And if the two varianble are independent, mutual information will be 0.
+
+## Information Gain
+There might be some misusage of the terminology Information Gain. Its also a measure of amount of information gained about a random variable from observing another random variable. Usually information gain is defined by conditioning on one specific value of the observed random variable, hence the **expected value of information gain is the mutual information.**
+
+Formal definition:
+$$IG(X,a)=H(X)-H(X|a)$$
+KD-Divergence definition:
+$$IG(X,a)=D_{KL}(P_X(X|a)||P_X(X))$$
+
+<br>
 
 ## How to choose ML algorithm?
 **Size of training data**: If we have very few training data comparing to available features, its better to choose a high bias low variance model, such as linear regression, linear SVM, Naive Bayes etc. Otherwise, its better to choose a high variance low bias model, such as decision tree, kernel SVM, KNN, etc.

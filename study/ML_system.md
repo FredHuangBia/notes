@@ -132,3 +132,115 @@ Feature crossing can be used to combine multiple (usually 2) categorical feature
 
 ## Data leakage
 Data leakage happends when information not availabel during test scenario is injected in training set. Common data leakage sources are preprocessing, future data, etc.
+
+<br>
+
+## ML system failures
+### Causes of ML System Failures
+The ML specific failure is harder to detect, it often fails silently.
+- operational metrics (software failure)
+- ML performance metrics (ML specific failure)
+
+### Edge Cases or Long Tail
+Makes ML hard to deploy in safety-critical scenarios, such as self-driving, medical diagnosis, traffic control, eDiscovery, etc.
+
+## Monitoring of ML system failures
+### Natual label
+Some AI products have natural label, such as click through rate for recommendation system. These will make monitoring easier.
+
+### Feedback loop
+The feedback loop is the process between proposing an output and kowing whether the output is correct. Faster feedback loop leads to swifter monitoring. Recommendation systems of clickable ads or next tiktop video etc has a very fast feedback loop. But recommendation for youtube videos, or cloth, or even cars recommendations may take minutes, days, or months to see the real outcome. 
+
+To collect fast feedback for things with long feedback loop, you can have prompts like: “Do you like this recommendation? Yes / No”. And sometiems we could set the feedback window time length, it is a trade-off between speed and a accuracy. Shorter windows will tend to have more premature negative labels.
+
+#### Degenerate feedback loop
+Degenerate feedback loop can happen when predictions themselves affects the feedback. For example, in recommendation, things showed at the top are more likely to be clicked by the user, and the system may think these are correct predictions. 
+
+To detect degenerated feedback loop, you could
+- Measure the popularity diversity of outputs
+- Divide items into polularity buckets, assume accurate recommendation for all buckets. If system recommend polular items much better, then degenerated.
+
+To correct degenerated feedback loop, you could
+- Add randomized recommendations and determine how good these random recommendations are. Risk is user may lose interest in random items. There's a method called contextual bandits to fix it.
+- When training, add a positional encoding to make the model know the position of item. When inference, remove positional encoding for a fair output.
+
+<br>
+
+## Data Distribution Shifts
+### What is it?
+- Train and deploy data distribution may not be same, causing train-serving skew
+- Deploy data distribution change
+  - Non-stationary real world, such as for 2019, ppl searching for Wuhan want info about travel, for 2020, they may want info about Covid
+  - Internal code bugs
+
+### Types of data distribution shifts
+Let's call inputs $X$, labels $Y$, training data $(X,Y)$. The ML model usually trys to estimate $P(Y|X)$. The joint distribution of $X, Y$ will be
+$$P(X,Y)=P(Y|X)P(X)$$
+$$P(X,Y)=P(X|Y)P(Y)$$
+- **Covariate Shift**: When $P(X)$ is changed but $P(Y|X)$ remains the same.
+- **Label Shift**: When $P(Y)$ is changed but $P(X|Y)$ remains the same.
+- **Concept Drift**: When $P(Y|X)$ is changed but $P(X)$ remains the same.
+
+#### Covariate shift
+A covariate is a input variable which can influence your interested (output) variable. \
+Example 1: Suppose you are learning to predict breast cancer. Your data is collected from hospital, where you have more data from elder female. While in real world, you have female users of all ages. \
+Example 2: Suppose you are predicting wheter a coughing is due to covid. Your data is collected from hospital monitoring. However, in real world data are much more dirty than the ideal hospital environment. \
+If you know the real world distribution, you could apply importance sampling to mimic real world distribution in training, or inject realistic noise etc. \
+
+#### Label shift
+Usually, covariate shift $P(X)$ will also cause label shift, aka $P(Y)$ becomes different. The methods to handle both are similar.
+
+#### Concept drift
+In many cases, concept drifts are cyclic or seasonal. For example, rideshare’s prices will fluctuate on weekdays versus weekends, and flight tickets rise during holiday seasons. Companies might have different models to deal with cyclic and seasonal drifts. For example, they might have one model to predict rideshare prices on weekdays and another model for weekends.
+
+### More General Data Distribution Shifts
+- **Feature change**: When we have new feature, or old feature become invalid, or the representation of feature is changed.
+- **Label schema change**: When possible values of $Y$ changed.
+
+
+## Handling Data Distribution Shifts
+
+
+<br>
+
+
+## Recommendation system
+### Content baded filtering
+**profile vector**: stores user's feature, such as type of movie watched \
+**item vector**: stores information about products, such as type of the movie \
+Content filtering finds the similarity between the two, and recommend ones with highest scores. \
+Common similarity methods:
+- Cosine similarity
+- Euclidean distance
+- Pearson’s Correlation
+
+Cons:
+- Can only recommend similar items base on user's past behavior, can not recommend items of new tpes.
+
+### User-User Collaborative filtering
+Can solve the above con. Collaborative filtering is a method of making automatic predictions (filtering) about the interests of a user by collecting preferences or taste information from many users (collaborating). The underlying assumption of the collaborative filtering approach is that if a person A has the same opinion as a person B on an issue, A is more likely to have B's opinion on a different issue than that of a randomly chosen person.
+
+For example, for a product $i$, the score of it to a user $u$ is
+$$P(u,i) = \frac{\sum_v sim(u,v)r(v,i)}{\sum_v sim(u, v)}$$
+where $sim(u,v)$ is similarity scores between two users, and $r(v,i)$ is the rating of user $v$ to product $i$. The idea is to weight the rating of similar users higher, different users lower.
+
+### Item-Item collaborative filtering
+Similar to User-User, but now we weight the the rating by item-item similarity, and use the user's own ratings. The idea is if the product is similar to other products that the user liked, then the user is also likely to like this product.
+
+$$P(u,i) = \frac{\sum_j sim(i,j)r(u,j)}{\sum_j sim(i, j)}$$
+
+### Cold start
+Cold start refers to a new user or new product joins. \
+For **user cold start**, just use polulatiry recommendation. For **product cold start**, can first use content filtering.
+
+### Low Rank Matrix Factorization
+The intuition behind using matrix factorization is that there must be some latent features (much smaller than the number of users and the number of movies) that determine how a user rates a movie.
+
+### Case study
+[Tiktok's recommendation system](https://towardsdatascience.com/why-tiktok-made-its-user-so-obsessive-the-ai-algorithm-that-got-you-hooked-7895bb1ab423)
+![](imgs/tiktok.webp)
+
+<br>
+
+## Active Learning
+Instead of randomly selecting samples to train a model on, we use samples most helpful to that model according to some heuristics.
