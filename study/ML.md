@@ -1,5 +1,6 @@
-# Machine Learning
-## Logistic Regression
+<h1 style="text-align: center;border-bottom: none;">Machine Learning</h1>
+
+# Logistic Regression
 The function used to map from variable $x$ to a probability is the sigmoid: 
 $$\sigma(x)=\frac{1}{1+e^{-x}}$$
 
@@ -32,7 +33,7 @@ One of the main reasons why MSE doesn’t work with logistic regression is when 
 
 <br>
 
-## Linear Regression
+# Linear Regression
 Let $\epsilon$ bethe noise term, we have
 $$Y = X\beta + \epsilon$$
 To solve it, we use least square
@@ -45,11 +46,11 @@ $$\beta=(X^TX)^{-1}X^TY$$
 When $X^TX$ is not invertible, the solution is not unique, and we need to solve it by SVD.
 <br>
 
-## Perceptron
+# Perceptron
 
 <br>
 
-## SVM
+# SVM
 Given a lot of data points $(x_i, y_i)$, where $y_i\in \{-1, 1\}$, we want to find a hyperplane $w^Tx+b=0$ that best seperates the data. By best, we want the gap between the hyperplane to the two categories to be as large as possible. For positive examples, we want $w^Tx+b \geq 1$, and for negative examples, we want $w^Tx+b\leq-1$. This is equivalent to $y(w^Tx+b)\geq 1$. The gap between the two hyperplanes $w^Tx+b=\{1,-1\}$ is $\frac{2}{||w||}$. So to maximize the gap, we want
 $$\min ||x|| \;\; subject\; to\; y(w^Tx+b)\geq 1$$
 But what if the data points are not linearly separable by a single hyperplane? We have to find some soft margin and a loss function. Now assume for each point, it contributes to the loss is $L=max(0,1-y(w^Tx+b))$. Now, for all the points that are correctly classified, $y(w^Tx+b)\geq 1$, so it does not contribute to the loss. Now the total loss function is
@@ -59,12 +60,12 @@ Now, if we increase $\lambda$, we are getting punished more if we misclassify a 
 We usually solve the dual problem. And for non-linearly separable data, we use kernel trick.
 <br>
 
-## Boosting
+# Boosting
 Sequentially combine a group of weak classifiers to form a stronger one.
 
 <br>
 
-## Naive Bayes
+# Naive Bayes
 Bayes rule
 $$P(Y|X) = \frac{P(X|Y)P(Y)}{P(X)}=\frac{P(X,Y)}{P(X)}$$
 $P(Y|X)$ is called posterior, $P(Y)$ is called prior, $P(X|Y)$ is called likelihood, $P(X)$ is called evidence.
@@ -75,7 +76,7 @@ What if the variables are continuous? We could divide them into several discrete
 
 <br>
 
-## Decicsion Tree
+# Decicsion Tree
 Given a lot of decision critrerion, we choose the one that maximize information Gain (actually mutual information). We do this until all the data are correctly classified, or some other stopping criterion is met.
 
 $$Entropy = H = \sum_i -p_i \log(p_i)$$
@@ -84,7 +85,7 @@ $$IG = H(parent) - \sum_i w_i H(child)$$
 
 <br>
 
-## Random Forest
+# Random Forest
 Decision tree is very sensitive to the training data. So it may not generalize well. Random forest generalize better. 
 
 - Step 1: Build new sub datasets from the original one. Such as randomly select with replacement, this is called boostraping. 
@@ -99,12 +100,12 @@ How to pick number of features? Usually $\sqrt{NumFeatures}$.
 
 <br>
 
-## KNN & K-Means
+# KNN & K-Means
 KNN is a supervised learning method to classify or regress a new data according to its nearest neighbors, while K-Means is a unsupervised learning algorith for clustering.
 
 <br>
 
-## K-Means vs Mean-Shift vs DBScan
+# K-Means vs Mean-Shift vs DBScan
 K-Means:
 - given k centers
 - update assignment of every point and update the center
@@ -120,15 +121,15 @@ DBScan is a density-based clustering non-parametric algorithm: given a set of po
 
 <br>
 
-## GMM
+# GMM
 
-## HMM
+# HMM
 Hidden markov chain + observed variables. Transition matrix is the probability of going to each state from each state.  Emission matrix of the probability of observations at each state. Now, lets see we see a serieous of observations $Y$, and what is the most likely hidden states sequence $X$?
 $$P(X|Y) = \frac{P(Y|X)P(X)}{P(Y)}=\frac{\prod_i P(Y_i|X_i)\prod_iP(X_i|X_{{i-1}})}{P(Y)}$$
 
 <br>
 
-## ROC & AUC
+# ROC & AUC
 ROC curve is the polot of true positive rate (also called recall) versus false positive rate. The true positive rate is how likely a positive will be predicted correctly. And the false positive rate is how likely we mispredict a negative as positive.
 $$TPR = \frac{TP}{TP+FN}$$
 $$FPR = \frac{FP}{TN+FP}$$
@@ -136,11 +137,11 @@ AUC is the area under this curve. The larger, the better. Best is TPR=1 and FPR=
 
 <br>
 
-## $F_1$ score & $F_\beta$ scure
+# $F_1$ score & $F_\beta$ scure
 $$F_1=\frac{2 * precision * recall}{precision + recall}$$
 $F_\beta$ score is a way to weight the importance of precision and recall differently. Why we don't use arithmatic average? Because that assumes precision and recall could replace each other, when one drop, the increase of the other could mitigate that. This is obviously wrong.
 
-## KL-Divergence
+# KL-Divergence
 KL-Divergence, also called relative entropy, denoted $D_{KL}(P||Q)$, is a measure of how probability distribution $P$ is different from a reference $Q$. 
 
 $$D_{KL}(P||Q)=\sum_{x}P(x)\log\frac{P(x)}{Q(x)}$$
@@ -154,13 +155,13 @@ It has these properties:
 - not symmetric 
 - not satisfy the triangle inequality
 
-## Mutual Information
+# Mutual Information
 Mutual information of two random variables is a measure of mutual dependence, it quantifies the amount of information obtained about one random variable by observing the other random variable.
 $$I(X;Y)=D_{KL}(P(X,Y)||P_X\times P_Y) = \sum_{x,y}P_{X,Y}(x,y)\log \frac{P_{X,Y}(x,y)}{P_X(x)P_Y(y)}$$
 
 Interestingly, mutual information is symmetric! And if the two varianble are independent, mutual information will be 0.
 
-## Information Gain
+# Information Gain
 There might be some misusage of the terminology Information Gain. Its also a measure of amount of information gained about a random variable from observing another random variable. Usually information gain is defined by conditioning on one specific value of the observed random variable, hence the **expected value of information gain is the mutual information.**
 
 Formal definition:
@@ -170,14 +171,14 @@ $$IG(X,a)=D_{KL}(P_X(X|a)||P_X(X))$$
 
 <br>
 
-## How to choose ML algorithm?
+# How to choose ML algorithm?
 **Size of training data**: If we have very few training data comparing to available features, its better to choose a high bias low variance model, such as linear regression, linear SVM, Naive Bayes etc. Otherwise, its better to choose a high variance low bias model, such as decision tree, kernel SVM, KNN, etc.
 
 **Interpretability**: 
 
 **Speed or training time:** 
 
-## Mahalanobis distance
+# Mahalanobis distance
 The Mahalanobis distance is a measure of distance between a point $P$ and a distribution $D$. It is a multi-dimensional generalization of the idea of measuring how many standard deviations away $P$ is from the mean of $D$. If the distribution is rescaled to have unit variance, then Mahalanobis distance is the same as Euclidean distance.
 
 Given a probability distribution $Q$ with mean $y$, and covariance matrix $S$, the Mahalanobis distance of a point $x$ from $Q$ is:
