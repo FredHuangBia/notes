@@ -59,6 +59,13 @@ Attention models usually use layer norm instead of batch norm. One reason is whe
 
 <br>
 
+# Deformable Attention
+[Paper](https://arxiv.org/pdf/2010.04159.pdf)
+![](imgs/deformable_attention.png)
+
+
+<br>
+
 # ADAM optimizer
 It is a combination of momentum and RMSProp. Momentum is $\alpha G_{t-1} + (1-\alpha) G_t$ which trys to reduce oscillation during gradient descent. RMSProp adjusts the step size/learning rate for each parameter individually. Adam, except for keeping a runnin mean of the gradients with momentum, also keeps a running squared gradient with 2nd degree momentum. And it divides the gradient with the equare root of that ruuning square. This scales small gradients up and big gradients down. Its helpful to get us out from saddle points.
 
@@ -171,6 +178,12 @@ YOLOv4 Data augmentation such as mixup, better activation such as mish, better l
 - Feature selection
 - Dimension reduction
 
+
+<br>
+
+# Test time augmentation
+Instead of showing the regular, “clean” images, only once to the trained model, we will show it the augmented images several times. We will then average the predictions of each corresponding image and take that as our final guess.
+
 <br>
 
 # GRU vs LSTM
@@ -247,6 +260,12 @@ For DALLE2 specfically, it uses CLIP (Contrastive Language-Image Pre-training) a
 1. First, all images and their associated captions are passed through their respective encoders, mapping all objects into an m-dimensional space.
 2. Then, the cosine similarity of each (image, text) pair is computed.
 3. The training objective is to simultaneously maximize the cosine similarity between $N$ correct encoded image/caption pairs and minimize the cosine similarity between $N^2 - N$ incorrect encoded image/caption pairs.
+
+<br>
+
+## Whisper - Speech Recognition
+https://openai.com/research/whisper \
+Encoder decoder
 
 <br>
 
